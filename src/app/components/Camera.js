@@ -2,13 +2,13 @@ import React, { useRef, useEffect } from 'react';
 
 const Camera = () => {
     const videoRef = useRef(null);
-    const constraints = {
-        video: {
-          facingMode: { ideal: 'environment' } // 'environment' se refiere a la cámara trasera
-        }
-      };
 
     useEffect(() => {
+        const constraints = {
+            video: {
+              facingMode: { ideal: 'environment' } // 'environment' se refiere a la cámara trasera
+            }
+          };
         // Función para obtener el stream de la cámara
         const getVideo = async () => {
             try {
