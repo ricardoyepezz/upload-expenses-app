@@ -12,4 +12,4 @@ const storage = new Storage({
 
 const bucketName = 'upload-expenses-app-bucket-1';
 
-export default { storage, bucketName}
+export default { storage, bucketName }

@@ -1,10 +1,10 @@
 import './App.css';
-import Camera from '../src/app/components/Camera'
+import ExpenseForm from './app/components/ExpenseForm';
 
 function App() {
   return (
     <div className="App">
-      <Camera />
+      <ExpenseForm />
     </div>
   );
 }

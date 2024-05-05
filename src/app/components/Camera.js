@@ -1,27 +1,20 @@
+// Camera.js
 import React, { useRef, useEffect } from 'react';
-import { storage, bucketName } from '../../api/googleStorage';
-  
-const Camera = () => {
+
+const Camera = ({ onPhotoUploaded }) => {
     const videoRef = useRef(null);
+    const canvasRef = useRef(null);
 
     useEffect(() => {
-        const constraints = {
-            video: {
-              facingMode: { ideal: 'environment' } // 'environment' se refiere a la cámara trasera
-            }
-          };
-        // Función para obtener el stream de la cámara
+        const constraints = { video: { facingMode: { ideal: 'environment' } } };
         const getVideo = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                }
+                if (videoRef.current) videoRef.current.srcObject = stream;
             } catch (error) {
                 console.error('Error accessing the camera:', error);
             }
         };
-
         getVideo();
     }, []);
 
@@ -30,35 +23,34 @@ const Camera = () => {
         const height = videoRef.current.videoHeight;
         canvasRef.current.width = width;
         canvasRef.current.height = height;
-
         const ctx = canvasRef.current.getContext('2d');
         ctx.drawImage(videoRef.current, 0, 0, width, height);
 
         canvasRef.current.toBlob(blob => {
-            uploadFile(blob, storage, bucketName);
+            uploadFile(blob);
         }, 'image/jpeg');
     };
 
-    const uploadFile = (file, storage, bucketName) => {
-        const bucket = storage.bucket(bucketName);
-        const blob = bucket.file(`photo-${Date.now()}.jpg`);
-        const blobStream = blob.createWriteStream({
-          resumable: true,
-          metadata: {
-            contentType: 'image/jpeg',
-          },
-        });
-  
-        blobStream.on('error', err => console.error('Error uploading file:', err));
-        blobStream.on('finish', () => {
-          const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-          console.log(`File uploaded to ${publicUrl}`);
-        });
-  
-        blobStream.end(file);
-      };
+    const uploadFile = (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
 
-      return (
+        fetch('https://upload-expenses-app.rj.r.appspot.com/upload', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+          return response.json(); // Asegúrate de procesar la respuesta como JSON
+      })        .then(data => {
+            console.log(`File uploaded to ${data.url}`);
+            onPhotoUploaded(data.url); // Pasar la URL de la imagen al formulario
+        })
+        .catch(err => {
+            console.error('Error uploading file:', err);
+        });
+    };
+
+    return (
         <div>
             <video ref={videoRef} autoPlay playsInline />
             <button onClick={takePhoto}>Take Photo</button>
