@@ -23,33 +23,33 @@ const ExpenseForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = {
-            date, 
-            category, 
-            description, 
-            amount, 
-            imageURL, 
-            sheetName, 
+            date,
+            category,
+            description,
+            amount,
+            imageURL,
+            sheetName,
             spreadsheetId
         };
         const bodyStringify = JSON.stringify(formData)
         console.log(bodyStringify);
         fetch('https://upload-expenses-app.rj.r.appspot.com/sheet', {
             method: 'POST',
+            mode: 'cors', // Asegúrate de usar cors si tu backend lo requiere
             headers: {
-                'Content-Type': 'application/json',
-                'mode': 'no-cors', // Este header es esencial para el envío de datos JSON
+                'Content-Type': 'application/json'
             },
             body: bodyStringify
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data.message);
-            alert('Data successfully added to the sheet!');
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('Failed to add data to the sheet!');
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data.message);
+                alert('Data successfully added to the sheet!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Failed to add data to the sheet!');
+            });
     };
 
     return (
@@ -58,8 +58,8 @@ const ExpenseForm = () => {
             <CategoryDropdown value={category} onChange={e => setCategory(e.target.value)} />
             <DescriptionInput value={description} onChange={e => setDescription(e.target.value)} />
             <AmountInput value={amount} onChange={e => setAmount(e.target.value)} />
-            <InputComponent value={sheetName} onChange={e => setSheetName(e.target.value)} title={'Sheet Name:'}/>
-            <InputComponent value={spreadsheetId} onChange={e => setSpreadsheetId(e.target.value)} title={'Sheet ID:'}/>
+            <InputComponent value={sheetName} onChange={e => setSheetName(e.target.value)} title={'Sheet Name:'} />
+            <InputComponent value={spreadsheetId} onChange={e => setSpreadsheetId(e.target.value)} title={'Sheet ID:'} />
             <Camera onPhotoUploaded={handlePhotoUploaded} />
             <button type="submit">Submit</button>
         </form>

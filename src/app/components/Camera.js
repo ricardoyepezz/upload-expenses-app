@@ -37,6 +37,10 @@ const Camera = ({ onPhotoUploaded }) => {
 
     fetch('https://upload-expenses-app.rj.r.appspot.com/upload', {
       method: 'POST',
+      mode: 'cors', // Asegúrate de usar cors si tu backend lo requiere
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: formData,
     })
       .then(response => {
