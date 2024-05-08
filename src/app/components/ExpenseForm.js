@@ -1,4 +1,3 @@
-// ExpenseForm.js
 import React, { useState } from 'react';
 import Camera from './Camera';
 import DateInput from './DateInput';
@@ -13,43 +12,34 @@ const ExpenseForm = () => {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [imageURL, setImageURL] = useState('');
-    const [sheetName, setSheetName] = useState('')
-    const [spreadsheetId, setSpreadsheetId] = useState('')
+    const [sheetName, setSheetName] = useState('');
+    const [spreadsheetId, setSpreadsheetId] = useState('');
 
     const handlePhotoUploaded = (url) => {
         setImageURL(url);
     };
 
+    const isFormValid = () => date && category && description && amount && imageURL && sheetName && spreadsheetId;
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const formData = {
-            date,
-            category,
-            description,
-            amount,
-            imageURL,
-            sheetName,
-            spreadsheetId
-        };
-        const bodyStringify = JSON.stringify(formData)
-        console.log(bodyStringify);
+        const formData = { date, category, description, amount, imageURL, sheetName, spreadsheetId };
         fetch('https://upload-expenses-app.rj.r.appspot.com/sheet', {
             method: 'POST',
-            mode: 'cors', // Asegúrate de usar cors si tu backend lo requiere
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: bodyStringify
+            body: JSON.stringify(formData)
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data.message);
-                alert('Data successfully added to the sheet!');
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('Failed to add data to the sheet!');
-            });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data.message);
+            alert('Data successfully added to the sheet!');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Failed to add data to the sheet!');
+        });
     };
 
     return (
@@ -61,7 +51,7 @@ const ExpenseForm = () => {
             <InputComponent value={sheetName} onChange={e => setSheetName(e.target.value)} title={'Sheet Name:'} />
             <InputComponent value={spreadsheetId} onChange={e => setSpreadsheetId(e.target.value)} title={'Sheet ID:'} />
             <Camera onPhotoUploaded={handlePhotoUploaded} />
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={!isFormValid()}>Submit</button>
         </form>
     );
 };
