@@ -1,3 +1,4 @@
+// ExpenseForm.js
 import React, { useState } from 'react';
 import Camera from './Camera';
 import DateInput from './DateInput';
@@ -12,24 +13,33 @@ const ExpenseForm = () => {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [imageURL, setImageURL] = useState('');
-    const [sheetName, setSheetName] = useState('');
-    const [spreadsheetId, setSpreadsheetId] = useState('');
+    const [sheetName, setSheetName] = useState('')
+    const [spreadsheetId, setSpreadsheetId] = useState('')
 
     const handlePhotoUploaded = (url) => {
         setImageURL(url);
     };
 
-    const isFormValid = () => date && category && description && amount && imageURL && sheetName && spreadsheetId;
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        const formData = { date, category, description, amount, imageURL, sheetName, spreadsheetId };
+        const formData = {
+            date, 
+            category, 
+            description, 
+            amount, 
+            imageURL, 
+            sheetName, 
+            spreadsheetId
+        };
+        const bodyStringify = JSON.stringify(formData)
+        console.log(bodyStringify);
         fetch('https://upload-expenses-app.rj.r.appspot.com/sheet', {
             method: 'POST',
+            mode: 'no-cors', // Este header es esencial para el envío de datos JSON
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData)
+            body: bodyStringify
         })
         .then(response => response.json())
         .then(data => {
@@ -48,10 +58,10 @@ const ExpenseForm = () => {
             <CategoryDropdown value={category} onChange={e => setCategory(e.target.value)} />
             <DescriptionInput value={description} onChange={e => setDescription(e.target.value)} />
             <AmountInput value={amount} onChange={e => setAmount(e.target.value)} />
-            <InputComponent value={sheetName} onChange={e => setSheetName(e.target.value)} title={'Sheet Name:'} />
-            <InputComponent value={spreadsheetId} onChange={e => setSpreadsheetId(e.target.value)} title={'Sheet ID:'} />
+            <InputComponent value={sheetName} onChange={e => setSheetName(e.target.value)} title={'Sheet Name:'}/>
+            <InputComponent value={spreadsheetId} onChange={e => setSpreadsheetId(e.target.value)} title={'Sheet ID:'}/>
             <Camera onPhotoUploaded={handlePhotoUploaded} />
-            <button type="submit" disabled={!isFormValid()}>Submit</button>
+            <button type="submit">Submit</button>
         </form>
     );
 };
