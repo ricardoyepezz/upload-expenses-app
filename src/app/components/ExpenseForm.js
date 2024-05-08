@@ -35,7 +35,7 @@ const ExpenseForm = () => {
         console.log(bodyStringify);
         fetch('https://upload-expenses-app.rj.r.appspot.com/sheet', {
             method: 'POST',
-            mode: 'no-cors', // Este header es esencial para el envío de datos JSON
+            mode: 'cors', // Este header es esencial para el envío de datos JSON
             headers: {
                 'Content-Type': 'application/json',
             },
