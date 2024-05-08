@@ -31,13 +31,11 @@ const ExpenseForm = () => {
             sheetName, 
             spreadsheetId
         };
-
+        const bodyStringify = JSON.stringify(formData)
+        console.log(bodyStringify);
         fetch('https://upload-expenses-app.rj.r.appspot.com/sheet', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            body: bodyStringify
         })
         .then(response => response.json())
         .then(data => {
