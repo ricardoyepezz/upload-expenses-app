@@ -13,14 +13,23 @@ const ExpenseForm = () => {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [imageURL, setImageURL] = useState('');
-    const [sheetName, setSheetName] = useState('')
     const [spreadsheetId, setSpreadsheetId] = useState('')
-
+    const sheetName = 'Hoja1'
+    
     const handlePhotoUploaded = (url) => {
         setImageURL(url);
     };
 
-    const isFormValid = () => date && category && amount && imageURL && sheetName && spreadsheetId;
+    const isFormValid = () => date && category && amount && imageURL && spreadsheetId;
+
+    const resetForm = () => {
+        setDate('');
+        setCategory('');
+        setDescription('');
+        setAmount('');
+        setImageURL('');
+        setSpreadsheetId('');
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -37,7 +46,7 @@ const ExpenseForm = () => {
         console.log(bodyStringify);
         fetch('https://upload-expenses-app.rj.r.appspot.com/sheet', {
             method: 'POST',
-            mode: 'cors', // Este header es esencial para el envío de datos JSON
+            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -47,6 +56,7 @@ const ExpenseForm = () => {
             .then(data => {
                 console.log('Success:', data.message);
                 alert('Data successfully added to the sheet!');
+                resetForm();
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -60,7 +70,6 @@ const ExpenseForm = () => {
             <CategoryDropdown value={category} onChange={e => setCategory(e.target.value)} />
             <DescriptionInput value={description} onChange={e => setDescription(e.target.value)} />
             <AmountInput value={amount} onChange={e => setAmount(e.target.value)} />
-            <InputComponent value={sheetName} onChange={e => setSheetName(e.target.value)} title={'Sheet Name:'} />
             <InputComponent value={spreadsheetId} onChange={e => setSpreadsheetId(e.target.value)} title={'Sheet ID:'} />
             <Camera onPhotoUploaded={handlePhotoUploaded} />
             <button type="submit" disabled={!isFormValid()}>Submit</button>
