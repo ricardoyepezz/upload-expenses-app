@@ -13,14 +13,14 @@ const ExpenseForm = () => {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [imageURL, setImageURL] = useState('');
-    const [spreadsheetId, setSpreadsheetId] = useState('')
+    const spreadsheetId = '1d-KRf4Nvs2b_I1IEVNh0xrrdwSYOtWgz57V_8NhwOAI'
     const sheetName = 'Hoja1'
     
     const handlePhotoUploaded = (url) => {
         setImageURL(url);
     };
 
-    const isFormValid = () => date && category && amount && imageURL && spreadsheetId;
+    const isFormValid = () => date && category && amount && imageURL;
 
     const resetForm = () => {
         setDate('');
@@ -28,7 +28,6 @@ const ExpenseForm = () => {
         setDescription('');
         setAmount('');
         setImageURL('');
-        setSpreadsheetId('');
     };
 
     const handleSubmit = (e) => {
@@ -70,7 +69,6 @@ const ExpenseForm = () => {
             <CategoryDropdown value={category} onChange={e => setCategory(e.target.value)} />
             <DescriptionInput value={description} onChange={e => setDescription(e.target.value)} />
             <AmountInput value={amount} onChange={e => setAmount(e.target.value)} />
-            <InputComponent value={spreadsheetId} onChange={e => setSpreadsheetId(e.target.value)} title={'Sheet ID:'} />
             <Camera onPhotoUploaded={handlePhotoUploaded} />
             <button type="submit" disabled={!isFormValid()}>Submit</button>
         </form>
