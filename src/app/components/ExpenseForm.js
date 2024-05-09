@@ -5,7 +5,6 @@ import DateInput from './DateInput';
 import CategoryDropdown from './CategoryDropdown';
 import DescriptionInput from './DescriptionInput';
 import AmountInput from './AmountInput';
-import InputComponent from './InputComponent';
 
 const ExpenseForm = () => {
     const [date, setDate] = useState('');
@@ -13,7 +12,7 @@ const ExpenseForm = () => {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [imageURL, setImageURL] = useState('');
-    const spreadsheetId = '1d-KRf4Nvs2b_I1IEVNh0xrrdwSYOtWgz57V_8NhwOAI'
+    const spreadsheetId = process.env.REACT_APP_SPREADSHEET_ID
     const sheetName = 'Hoja1'
     
     const handlePhotoUploaded = (url) => {
