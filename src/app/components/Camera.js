@@ -25,7 +25,9 @@ const Camera = ({ onPhotoUploaded }) => {
     getVideo();
   }, [flashEnabled]);
 
-  const toggleFlash = () => {
+  const toggleFlash = (e) => {
+    e.preventDefault();      
+    e.stopPropagation();
     setFlashEnabled(!flashEnabled);  // Cambia el estado del "flash"
   };
 
