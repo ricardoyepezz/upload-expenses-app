@@ -12,11 +12,13 @@ const ExpenseForm = () => {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [imageURL, setImageURL] = useState('');
+    const [key, setKey] = useState(0);  
     const spreadsheetId = process.env.REACT_APP_SPREADSHEET_ID
     const sheetName = 'Hoja1'
     
     const handlePhotoUploaded = (url) => {
         setImageURL(url);
+        setKey(prevKey => prevKey + 1);
     };
 
     const isFormValid = () => date && category && amount && imageURL;
@@ -68,7 +70,7 @@ const ExpenseForm = () => {
             <CategoryDropdown value={category} onChange={e => setCategory(e.target.value)} />
             <DescriptionInput value={description} onChange={e => setDescription(e.target.value)} />
             <AmountInput value={amount} onChange={e => setAmount(e.target.value)} />
-            <Camera onPhotoUploaded={handlePhotoUploaded} />
+            <Camera key={key} onPhotoUploaded={handlePhotoUploaded} />
             <button type="submit" disabled={!isFormValid()}>Submit</button>
         </form>
     );
