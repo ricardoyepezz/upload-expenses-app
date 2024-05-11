@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap'
 import './../../App.css';
 
 const Camera = ({ onPhotoUploaded }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const [buttonEnable, setButtonEnable] = useState(false)
 
   useEffect(() => {
     const constraints = {
@@ -36,6 +37,7 @@ const Camera = ({ onPhotoUploaded }) => {
 
     canvasRef.current.toBlob(blob => {
       uploadFile(blob);
+      setButtonEnable(true)  
     }, 'image/jpeg');
   };
 
@@ -49,7 +51,7 @@ const Camera = ({ onPhotoUploaded }) => {
     })
       .then(response => response.json())
       .then(data => {
-        onPhotoUploaded(data.url);  // Notifica a ExpenseForm la URL de la imagen subida
+        onPhotoUploaded(data.url);
       })
       .catch(err => {
         console.error('Error uploading file:', err);
@@ -59,7 +61,7 @@ const Camera = ({ onPhotoUploaded }) => {
   return (
     <div>
       <video ref={videoRef} autoPlay playsInline />
-      <Button className='mb-3' onClick={takePhoto}>Take Photo</Button>
+      <Button disabled={buttonEnable} className='mb-3' onClick={takePhoto}>Take Photo</Button>
       <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
     </div>
   );
