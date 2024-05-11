@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { Button } from 'react-bootstrap'
 import './../../App.css';
 
 const Camera = ({ onPhotoUploaded }) => {
@@ -58,7 +59,7 @@ const Camera = ({ onPhotoUploaded }) => {
   return (
     <div>
       <video ref={videoRef} autoPlay playsInline />
-      <button onClick={takePhoto}>Take Photo</button>
+      <Button className='mb-3' onClick={takePhoto}>Take Photo</Button>
       <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
     </div>
   );

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToggleButtonGroup, ToggleButton, Button, Form } from 'react-bootstrap';
+
 import Camera from './Camera';
 import DateInput from './DateInput';
 import CategoryDropdown from './CategoryDropdown';
@@ -85,26 +87,26 @@ const ExpenseForm = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <DateInput value={date} onChange={e => setDate(e.target.value)} />
-            <CategoryDropdown value={category} onChange={e => setCategory(e.target.value)} />
-            <DescriptionInput value={description} onChange={e => setDescription(e.target.value)} />
-            <AmountInput value={amount} onChange={e => setAmount(e.target.value)} />
-            <div>
-                <label>
-                    <input type="radio" checked={uploadMethod === 'camera'} onChange={() => setUploadMethod('camera')} />
+            <div className='d-flex justify-content-center'>
+             <ToggleButtonGroup className="mb-4" type="radio" name="uploadMethod" value={uploadMethod} onChange={setUploadMethod}>
+                <ToggleButton id="tbg-radio-1" value={'camera'} variant="secondary">
                     Usar Cámara
-                </label>
-                <label>
-                    <input type="radio" checked={uploadMethod === 'file'} onChange={() => setUploadMethod('file')} />
+                </ToggleButton>
+                <ToggleButton id="tbg-radio-2" value={'file'} variant="secondary">
                     Subir Archivo
-                </label>
+                </ToggleButton>
+            </ToggleButtonGroup>
             </div>
             {uploadMethod === 'camera' ? (
                 <Camera onPhotoUploaded={handlePhotoUploaded} />
             ) : (
-                <input type="file" accept="image/*,application/pdf" onChange={handleFileChange} />
+                <Form.Control className='mb-3' type="file" size="lg" accept="image/*,application/pdf" onChange={handleFileChange} />
             )}
-            <button type="submit" disabled={!isFormValid()}>Submit</button>
+            <DateInput value={date} onChange={e => setDate(e.target.value)} />
+            <CategoryDropdown value={category} onChange={e => setCategory(e.target.value)} />
+            <DescriptionInput value={description} onChange={e => setDescription(e.target.value)} />
+            <AmountInput value={amount} onChange={e => setAmount(e.target.value)} />
+            <Button type="submit" disabled={!isFormValid()}>Submit</Button>
         </form>
     );
 };

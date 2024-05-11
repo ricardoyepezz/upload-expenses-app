@@ -1,10 +1,10 @@
 import React from 'react';
+import { Form } from 'react-bootstrap'
 
 const AmountInput = ({ value, onChange }) => {
   return (
     <div>
-      <label>Amount ($):</label>
-      <input type="number" value={value} onChange={onChange} min="0.01" step="0.01" />
+      <Form.Control className='mb-3' size="lg" placeholder="Amount" type="number" value={value} onChange={onChange} min="0.01" step="0.01" />
     </div>
   );
 };

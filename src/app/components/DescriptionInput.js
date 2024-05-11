@@ -1,10 +1,11 @@
 import React from 'react';
+import { Form } from 'react-bootstrap';
+
 
 const DescriptionInput = ({ value, onChange }) => {
   return (
     <div>
-      <label>Description:</label>
-      <input type="text" value={value} onChange={onChange} />
+      <Form.Control className='mb-3' size="lg" type="text" placeholder="Description" value={value} onChange={onChange}/>
     </div>
   );
 };
