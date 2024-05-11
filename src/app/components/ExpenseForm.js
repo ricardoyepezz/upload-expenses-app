@@ -1,4 +1,3 @@
-// ExpenseForm.js
 import React, { useState } from 'react';
 import Camera from './Camera';
 import DateInput from './DateInput';
@@ -12,15 +11,34 @@ const ExpenseForm = () => {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [imageURL, setImageURL] = useState('');
-    const [key, setKey] = useState(0);  
+    const [uploadMethod, setUploadMethod] = useState('camera');  // 'camera' o 'file'
     const spreadsheetId = process.env.REACT_APP_SPREADSHEET_ID
     const sheetName = 'Hoja1'
     
     const handlePhotoUploaded = (url) => {
         setImageURL(url);
-        setKey(prevKey => prevKey + 1);
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('https://upload-expenses-app.rj.r.appspot.com/upload', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setImageURL(data.url);  // Notifica al formulario la URL de la imagen subida
+                })
+                .catch(err => {
+                    console.error('Error uploading file:', err);
+                });
+        }
+    };
+    
     const isFormValid = () => date && category && amount && imageURL;
 
     const resetForm = () => {
@@ -71,7 +89,21 @@ const ExpenseForm = () => {
             <CategoryDropdown value={category} onChange={e => setCategory(e.target.value)} />
             <DescriptionInput value={description} onChange={e => setDescription(e.target.value)} />
             <AmountInput value={amount} onChange={e => setAmount(e.target.value)} />
-            <Camera key={key} onPhotoUploaded={handlePhotoUploaded} />
+            <div>
+                <label>
+                    <input type="radio" checked={uploadMethod === 'camera'} onChange={() => setUploadMethod('camera')} />
+                    Usar Cámara
+                </label>
+                <label>
+                    <input type="radio" checked={uploadMethod === 'file'} onChange={() => setUploadMethod('file')} />
+                    Subir Archivo
+                </label>
+            </div>
+            {uploadMethod === 'camera' ? (
+                <Camera onPhotoUploaded={handlePhotoUploaded} />
+            ) : (
+                <input type="file" accept="image/*,application/pdf" onChange={handleFileChange} />
+            )}
             <button type="submit" disabled={!isFormValid()}>Submit</button>
         </form>
     );
