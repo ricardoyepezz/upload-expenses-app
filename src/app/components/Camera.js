@@ -10,7 +10,6 @@ const Camera = ({ onPhotoUploaded }) => {
       video: {
         facingMode: { ideal: 'environment' },
         focusMode: { ideal: 'continuous' },
-        brightness: flashEnabled ? 1.0 : 0.5  // Usar estado para controlar brillo
       }
     }
     const getVideo = async () => {
