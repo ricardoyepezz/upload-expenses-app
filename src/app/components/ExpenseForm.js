@@ -57,6 +57,7 @@ const ExpenseForm = () => {
                 console.log('Success:', data.message);
                 alert('Data successfully added to the sheet!');
                 resetForm();
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Error:', error);

@@ -4,7 +4,6 @@ import './../../App.css';
 const Camera = ({ onPhotoUploaded }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [flashEnabled, setFlashEnabled] = useState(false);
 
   useEffect(() => {
     const constraints = {
@@ -23,13 +22,7 @@ const Camera = ({ onPhotoUploaded }) => {
       }
     };
     getVideo();
-  }, [flashEnabled]);
-
-  const toggleFlash = (e) => {
-    e.preventDefault();      
-    e.stopPropagation();
-    setFlashEnabled(!flashEnabled);  // Cambia el estado del "flash"
-  };
+  }, []);
 
   const takePhoto = (e) => {
     e.preventDefault();  // Previene el comportamiento predeterminado del botón
@@ -67,7 +60,6 @@ const Camera = ({ onPhotoUploaded }) => {
     <div>
       <video ref={videoRef} autoPlay playsInline />
       <button onClick={takePhoto}>Take Photo</button>
-      <button onClick={toggleFlash}>{flashEnabled ? 'Flash On' : 'Flash Off'}</button>
       <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
     </div>
   );
