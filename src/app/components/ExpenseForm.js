@@ -27,7 +27,7 @@ const ExpenseForm = () => {
             const formData = new FormData();
             formData.append('file', file);
 
-            fetch('https://upload-expenses-app.rj.r.appspot.com/upload', {
+            fetch('https://super-backend.vercel.app/upload', {
                 method: 'POST',
                 body: formData,
             })
@@ -64,7 +64,7 @@ const ExpenseForm = () => {
         };
         const bodyStringify = JSON.stringify(formData)
         console.log(bodyStringify);
-        fetch('https://upload-expenses-app.rj.r.appspot.com/sheet', {
+        fetch('https://super-backend.vercel.app/sheet', {
             method: 'POST',
             mode: 'cors',
             headers: {
